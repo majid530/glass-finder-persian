@@ -712,6 +712,11 @@
       return null;
     }
 
+    const DESKTOP_BREAKPOINT = 768;
+    function isDesktop() {
+      return window.innerWidth >= DESKTOP_BREAKPOINT;
+    }
+
     function syncGhostStyles() {
       const cs = window.getComputedStyle(searchInput);
       const props = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight',
@@ -722,14 +727,38 @@
       props.forEach(p => { ghostText.style[p] = cs[p]; });
     }
 
+    function applyAutocompleteVisibility() {
+      if (!isDesktop()) {
+        ghostText.textContent = '';
+        ghostText.style.display = 'none';
+      } else {
+        ghostText.style.display = '';
+        syncGhostStyles();
+        updateGhostText();
+      }
+    }
+
+    function handleViewportChange() {
+      syncGhostStyles();
+      applyAutocompleteVisibility();
+    }
+
     syncGhostStyles();
-    window.addEventListener('resize', syncGhostStyles);
-    window.addEventListener('orientationchange', syncGhostStyles);
+    applyAutocompleteVisibility();
+    window.addEventListener('resize', handleViewportChange);
+    window.addEventListener('orientationchange', () => {
+      // Wait for layout to settle after orientation change
+      setTimeout(handleViewportChange, 100);
+    });
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(syncGhostStyles);
+      document.fonts.ready.then(handleViewportChange);
     }
 
     function updateGhostText() {
+      if (!isDesktop()) {
+        ghostText.textContent = '';
+        return;
+      }
       const value = searchInput.value;
       if (!value) {
         ghostText.textContent = '';
