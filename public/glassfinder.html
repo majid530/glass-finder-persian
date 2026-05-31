@@ -883,6 +883,7 @@
     searchInput.addEventListener('input', updateGhostText);
 
     searchInput.addEventListener('keydown', (e) => {
+      if (!isDesktop()) return;
       if (e.key === 'Tab' || e.key === 'ArrowRight') {
         if (ghostText.textContent) {
           e.preventDefault();
