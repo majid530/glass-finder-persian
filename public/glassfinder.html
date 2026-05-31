@@ -691,6 +691,23 @@
       return null;
     }
 
+    function syncGhostStyles() {
+      const cs = window.getComputedStyle(searchInput);
+      const props = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight',
+        'letterSpacing', 'paddingTop', 'paddingRight', 'paddingBottom',
+        'paddingLeft', 'borderTopWidth', 'borderRightWidth',
+        'borderBottomWidth', 'borderLeftWidth', 'boxSizing', 'direction',
+        'textAlign'];
+      props.forEach(p => { ghostText.style[p] = cs[p]; });
+    }
+
+    syncGhostStyles();
+    window.addEventListener('resize', syncGhostStyles);
+    window.addEventListener('orientationchange', syncGhostStyles);
+    if (document.fonts && document.fonts.ready) {
+      document.fonts.ready.then(syncGhostStyles);
+    }
+
     function updateGhostText() {
       const value = searchInput.value;
       if (!value) {
