@@ -390,7 +390,7 @@
       }
 
       .results-container {
-        min-height: 0;
+        min-height: 60px;
       }
 
       .title {
@@ -433,7 +433,7 @@
       }
 
       .results-container {
-        min-height: 0;
+        min-height: 40px;
       }
 
       .search-container {
@@ -712,11 +712,6 @@
       return null;
     }
 
-    const DESKTOP_BREAKPOINT = 768;
-    function isDesktop() {
-      return window.innerWidth >= DESKTOP_BREAKPOINT;
-    }
-
     function syncGhostStyles() {
       const cs = window.getComputedStyle(searchInput);
       const props = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight',
@@ -727,38 +722,14 @@
       props.forEach(p => { ghostText.style[p] = cs[p]; });
     }
 
-    function applyAutocompleteVisibility() {
-      if (!isDesktop()) {
-        ghostText.textContent = '';
-        ghostText.style.display = 'none';
-      } else {
-        ghostText.style.display = '';
-        syncGhostStyles();
-        updateGhostText();
-      }
-    }
-
-    function handleViewportChange() {
-      syncGhostStyles();
-      applyAutocompleteVisibility();
-    }
-
     syncGhostStyles();
-    applyAutocompleteVisibility();
-    window.addEventListener('resize', handleViewportChange);
-    window.addEventListener('orientationchange', () => {
-      // Wait for layout to settle after orientation change
-      setTimeout(handleViewportChange, 100);
-    });
+    window.addEventListener('resize', syncGhostStyles);
+    window.addEventListener('orientationchange', syncGhostStyles);
     if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(handleViewportChange);
+      document.fonts.ready.then(syncGhostStyles);
     }
 
     function updateGhostText() {
-      if (!isDesktop()) {
-        ghostText.textContent = '';
-        return;
-      }
       const value = searchInput.value;
       if (!value) {
         ghostText.textContent = '';
@@ -883,7 +854,6 @@
     searchInput.addEventListener('input', updateGhostText);
 
     searchInput.addEventListener('keydown', (e) => {
-      if (!isDesktop()) return;
       if (e.key === 'Tab' || e.key === 'ArrowRight') {
         if (ghostText.textContent) {
           e.preventDefault();
