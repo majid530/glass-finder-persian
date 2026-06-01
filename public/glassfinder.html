@@ -776,14 +776,18 @@
 
       // Apply brand aliases
       result = result
-        .replace(/ip\s/gi, 'iphone ')
-        .replace(/ایفون/g, 'iphone')
-        .replace(/اپل/g, 'iphone')
+        .replace(/\bip\b/gi, 'iphone ')
+        .replace(/ایفون/g, 'iphone ')
+        .replace(/اپل/g, 'iphone ')
         .replace(/mi\s/gi, 'redmi ')
-        .replace(/شیائومی/g, 'redmi')
-        .replace(/xiaomi/gi, 'redmi')
+        .replace(/شیائومی/g, 'redmi ')
+        .replace(/شیامی/g, 'redmi ')
+        .replace(/xiaomi/gi, 'redmi ')
         .replace(/سامسونگ/g, 'samsung')
-        .replace(/پوکو/g, 'poco');
+        .replace(/\bpoko\b/gi, 'poco')
+        .replace(/پوکو/g, 'poco')
+        .replace(/not\s/gi, 'note ')
+        .replace(/نوت/g, 'note ');
 
       return result.toLowerCase().replace(/\s+/g, '');
     }
