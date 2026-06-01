@@ -738,6 +738,7 @@
     }
 
     function updateGhostText() {
+      if (isTouchDevice) return;
       const value = searchInput.value;
       if (!value) {
         ghostText.textContent = '';
