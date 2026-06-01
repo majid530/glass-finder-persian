@@ -529,146 +529,59 @@
   <script>
     // Compatibility data directly embedded
     const compatibilityGroups = [
-      {
-        id: 4,
-        name: 'Group 4',
-        models: ['A05', 'A06', 'A07', 'MI13C', 'Poco C65', 'Poco M6']
-      },
-      {
-        id: 5,
-        name: 'Group 5',
-        models: ['A10', 'A10s', 'M20']
-      },
-      {
-        id: 6,
-        name: 'Group 6',
-        models: ['A11', 'Note9', 'Mi 11 Lite']
-      },
-      {
-        id: 7,
-        name: 'Group 7',
-        models: ['A12', 'A13', 'A02', 'A02s', 'A03', 'A03s', 'A23', 'A04', 'A70']
-      },
-      {
-        id: 8,
-        name: 'Group 8',
-        models: ['A14', 'A22 5G', 'M14']
-      },
-      {
-        id: 9,
-        name: 'Group 9',
-        models: ['A15', 'A24', 'A25', 'A34 4G']
-      },
-      {
-        id: 10,
-        name: 'Group 10',
-        models: ['A16', 'A26', 'A17']
-      },
-      {
-        id: 11,
-        name: 'Group 11',
-        models: ['A22 4G', 'A32 4G', 'A31', 'A33 5G']
-      },
-      {
-        id: 12,
-        name: 'Group 12',
-        models: ['A51', 'A52', 'A53', 'S20 FE']
-      },
-      {
-        id: 13,
-        name: 'Group 13',
-        models: ['A54', 'S23 FE']
-      },
-      {
-        id: 14,
-        name: 'Group 14',
-        models: ['A56', 'A35', 'A36', 'S24 FE', 'S25 FE', 'S26 FE', 'A37', 'A57']
-      },
-      {
-        id: 15,
-        name: 'Group 15',
-        models: ['A37', 'A57']
-      },
-      {
-        id: 16,
-        name: 'Group 16',
-        models: [ 'Poco X5 Pro', 'Note 12 Pro plus', ]
-      },
-      {
-        id: 17,
-        name: 'Group 17',
-        models: ['S21 FE']
-      },
-      {
-        id: 18,
-        name: 'Group 18',
-        models: ['A34 5G']
-      },
-      {
-        id: 19,
-        name: 'Group 19',
-        models: ['Note 8 Pro', 'Poco M3']
-      },
-      {
-        id: 20,
-        name: 'Group 20',
-        models: ['Note 11', 'Note 11S', 'Note 12S', 'Note 10', 'Poco M4 Pro']
-      },
-      {
-        id: 21,
-        name: 'Group 21',
-        models: ['Note 12 Pro', 'Poco X4 GT', 'Note 11T Pro']
-      },
-      {
-        id: 22,
-        name: 'Group 22',
-        models: ['Note 12 4G', 'Poco X5']
-      },
-      {
-    id: 23,
-    name: 'Group 23',
-    models: [
-        'Note 13 Pro 4G',
-        'Poco X3',
-        'Note 14',
-        'Note 14S',
-        'Note 11 Pro',
-        'Note 12 Pro',
-        'A73',
-        'A71',
-        'A72'
-    ]
-},
-      {
-        id: 24,
-        name: 'Group 24',
-        models: ['Note 13 Pro 5G', 'Poco X7 Pro', 'Poco X6 Pro', 'Darya Bond 2']
-      },
-      {
-        id: 25,
-        name: 'Group 25',
-        models: ['Redmi 14C', 'Poco C75', 'Mi A5']
-      },
-      {
-        id: 26,
-        name: 'Group 26',
-        models: ['Redmi 15', 'Poco M7']
-      },
-      {
-        id: 27,
-        name: 'Group 27',
-        models: ['Redmi 15C', 'Poco C85']
-      },
-      {
-        id: 28,
-        name: 'Group 28',
-        models: ['Redmi 12C', 'Redmi 10C', 'Poco C40', 'C55']
-      },
-      {
-        id: 29,
-        name: 'Group 29',
-        models: ['Redmi 12', 'Poco M6 Pro', 'Redmi 13', 'Redmi A3']
-      }
+      { id: 1,  models: ['iPhone 5', 'iPhone 5S', 'iPhone SE'] },
+      { id: 2,  models: ['iPhone 6', 'iPhone 6S', 'iPhone 7', 'iPhone 8', 'iPhone SE 2', 'iPhone SE 3'] },
+      { id: 3,  models: ['iPhone 6 Plus', 'iPhone 6S Plus'] },
+      { id: 4,  models: ['iPhone 7', 'iPhone 8'] },
+      { id: 5,  models: ['iPhone 7 Plus', 'iPhone 8 Plus'] },
+      { id: 6,  models: ['iPhone X', 'iPhone XS', 'iPhone 11 Pro'] },
+      { id: 7,  models: ['iPhone XR', 'iPhone 11'] },
+      { id: 8,  models: ['iPhone XS Max', 'iPhone 11 Pro Max'] },
+      { id: 9,  models: ['iPhone 12', 'iPhone 12 Pro'] },
+      { id: 10, models: ['iPhone 12 Pro Max'] },
+      { id: 11, models: ['iPhone 13 Mini'] },
+      { id: 12, models: ['iPhone 13', 'iPhone 13 Pro', 'iPhone 14'] },
+      { id: 13, models: ['iPhone 13 Pro Max', 'iPhone 14 Plus'] },
+      { id: 14, models: ['iPhone 14 Pro'] },
+      { id: 15, models: ['iPhone 14 Pro Max'] },
+      { id: 16, models: ['iPhone 15', 'iPhone 16 6.1'] },
+      { id: 17, models: ['iPhone 15 Plus', 'iPhone 16 Plus 6.7'] },
+      { id: 18, models: ['iPhone 15 Pro 6.1'] },
+      { id: 19, models: ['iPhone 15 Pro Max'] },
+      { id: 20, models: ['iPhone 16 Pro', 'iPhone 17'] },
+      { id: 21, models: ['iPhone 16 Pro Max'] },
+      { id: 22, models: ['iPhone 17 Pro'] },
+      { id: 23, models: ['iPhone 17 Air'] },
+      { id: 24, models: ['iPhone 17 Pro Max'] },
+      { id: 25, models: ['A05', 'A06', 'A07', 'REDMI 13C', 'REDMI 13R', 'POCO C65', 'POCO M6'] },
+      { id: 26, models: ['A05S', 'POCO C51', 'POCO C55', 'M14 4G'] },
+      { id: 27, models: ['A10S', 'M10', 'M20', 'A10', 'M10S'] },
+      { id: 28, models: ['A11', 'REDMI NOTE 9', 'REDMI 11 LITE', 'REDMI 12 LITE', 'M11'] },
+      { id: 29, models: ['A12', 'A13', 'A23', 'A32 5G', 'A70', 'A70S', 'A42', 'A02', 'A02S', 'A03', 'A03S', 'A03 CORE', 'A04', 'A04S', 'A04 CORE', 'M02 4G', 'M02S', 'M04 4G', 'M12', 'M13', 'M23 5G', 'M32 5G', 'M33 5G'] },
+      { id: 30, models: ['A15', 'A25 5G', 'A24 4G', 'M34 5G'] },
+      { id: 31, models: ['A22 5G', 'A14', 'A34 5G'] },
+      { id: 32, models: ['A16', 'A17', 'A26'] },
+      { id: 33, models: ['A31', 'A32 4G', 'A33 5G', 'A22 4G', 'F22 4G', 'M22', 'M32 4G'] },
+      { id: 34, models: ['A30', 'A50', 'A20', 'A30S', 'A50S', 'M10S', 'M30', 'M30S', 'M31'] },
+      { id: 35, models: ['A20S', 'REDMI 9'] },
+      { id: 36, models: ['A51', 'A52', 'A52S', 'A53', 'M31S', 'S20 FE'] },
+      { id: 37, models: ['S21 FE 5G'] },
+      { id: 38, models: ['A54', 'S23 FE'] },
+      { id: 39, models: ['A35', 'A55', 'A35 5G'] },
+      { id: 40, models: ['A36', 'A37', 'A56', 'A57', 'S24 FE', 'S25 FE', 'S26 FE'] },
+      { id: 41, models: ['A21S', 'NOTE 9 PRO', 'NOTE 11 PRO', 'NOTE 12 PRO', 'NOTE 12 PRO PLUS', 'NOTE 13 4G', 'NOTE 14S', 'POCO X3', 'REDMI 11T', 'REDMI 12T', 'POCO X4 PRO', 'POCO X5', 'POCO X6', 'A71', 'A72', 'A73', 'A81', 'A91', 'M53', 'M54 5G', 'M62', 'S10 LITE', 'NOTE 10 LITE'] },
+      { id: 42, models: ['NOTE 8', 'NOTE 8T'] },
+      { id: 43, models: ['NOTE 8 PRO', 'POCO M3'] },
+      { id: 44, models: ['NOTE 11', 'NOTE 11S', 'NOTE 12S', 'NOTE 10S', 'POCO M4 PRO', 'POCO M5S', 'REDMI 10'] },
+      { id: 45, models: ['NOTE 13 5G', 'POCO X7 PRO', 'POCO X6 PRO', 'POCO F5', 'POCO F6'] },
+      { id: 46, models: ['REDMI 9C', 'REDMI 9A', 'REDMI', 'POCO C3', 'POCO C31'] },
+      { id: 47, models: ['REDMI 10C', 'REDMI 12C', 'POCO C40', 'POCO C61'] },
+      { id: 48, models: ['REDMI 12', 'REDMI 13', 'REDMI A3', 'POCO M6 PRO', 'NOTE 12R', 'NOTE 13R'] },
+      { id: 49, models: ['REDMI 13T', 'REDMI 13T PRO', 'POCO F3', 'REDMI 11X PRO'] },
+      { id: 50, models: ['REDMI 14C', 'REDMI A4', 'REDMI A5', 'POCO C75', 'POCO M7'] },
+      { id: 51, models: ['REDMI 15', 'POCO M7'] },
+      { id: 52, models: ['REDMI 15C', 'POCO C85'] },
+      { id: 53, models: ['POCO X4 GT', 'NOTE 11T PRO'] }
     ];
 
     const searchInput = document.getElementById('searchInput');
