@@ -815,7 +815,7 @@
 
       for (const group of compatibilityGroups) {
         const found = group.models.find(model =>
-          normalizeText(model).includes(term)
+          normalizeText(model) === term
         );
         if (found) {
           matchedModel = found;
