@@ -754,6 +754,7 @@
     }
 
     function acceptGhostText() {
+      if (isTouchDevice) return false;
       const value = searchInput.value;
       if (!value) return false;
 
