@@ -718,6 +718,7 @@
     }
 
     function syncGhostStyles() {
+      if (isTouchDevice) return;
       const cs = window.getComputedStyle(searchInput);
       const props = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight',
         'letterSpacing', 'paddingTop', 'paddingRight', 'paddingBottom',
@@ -727,11 +728,13 @@
       props.forEach(p => { ghostText.style[p] = cs[p]; });
     }
 
-    syncGhostStyles();
-    window.addEventListener('resize', syncGhostStyles);
-    window.addEventListener('orientationchange', syncGhostStyles);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(syncGhostStyles);
+    if (!isTouchDevice) {
+      syncGhostStyles();
+      window.addEventListener('resize', syncGhostStyles);
+      window.addEventListener('orientationchange', syncGhostStyles);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(syncGhostStyles);
+      }
     }
 
     function updateGhostText() {
