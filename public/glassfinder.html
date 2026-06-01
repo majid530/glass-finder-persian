@@ -375,6 +375,47 @@
       line-height: 1.5;
     }
 
+    .suggestion-header {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.875rem;
+      color: var(--text-secondary) !important;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+
+    .suggestion-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .suggestion-btn {
+      padding: 0.45rem 0.9rem;
+      background: rgba(255, 255, 255, 0.06) !important;
+      border: 1px solid rgba(255, 255, 255, 0.18) !important;
+      border-radius: 8px;
+      color: var(--text-primary) !important;
+      font-family: inherit;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .suggestion-btn:hover {
+      background: rgba(37, 99, 235, 0.22) !important;
+      border-color: rgba(59, 130, 246, 0.55) !important;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+    }
+
+    .suggestion-btn:active {
+      transform: translateY(0);
+    }
+
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
@@ -792,6 +833,101 @@
       return result.toLowerCase().replace(/\s+/g, '');
     }
 
+    // Levenshtein edit distance for fuzzy matching
+    function levenshtein(a, b) {
+      const m = a.length, n = b.length;
+      const dp = [];
+      for (let i = 0; i <= m; i++) { dp[i] = [i]; }
+      for (let j = 0; j <= n; j++) { dp[0][j] = j; }
+      for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+          dp[i][j] = a[i-1] === b[j-1]
+            ? dp[i-1][j-1]
+            : 1 + Math.min(dp[i-1][j], dp[i][j-1], dp[i-1][j-1]);
+        }
+      }
+      return dp[m][n];
+    }
+
+    // Find every model whose normalized name contains the search term
+    function findAllMatches(term) {
+      const results = [];
+      const seen = new Set();
+      for (const group of compatibilityGroups) {
+        for (const model of group.models) {
+          if (seen.has(model)) continue;
+          if (normalizeText(model).includes(term)) {
+            results.push({ model, group });
+            seen.add(model);
+          }
+        }
+      }
+      return results;
+    }
+
+    // Find close-but-not-exact matches using edit distance
+    function findFuzzyMatches(term) {
+      const maxDist = term.length <= 3 ? 1 : term.length <= 6 ? 2 : 3;
+      const scored = [];
+      const seen = new Set();
+      for (const group of compatibilityGroups) {
+        for (const model of group.models) {
+          if (seen.has(model)) continue;
+          const normModel = normalizeText(model);
+          const dist = levenshtein(term, normModel);
+          if (dist <= maxDist) {
+            scored.push({ model, group, dist });
+            seen.add(model);
+          }
+        }
+      }
+      return scored.sort((a, b) => a.dist - b.dist);
+    }
+
+    // Render the compatible-models result card
+    function showCompatibleResult(model, group) {
+      const compatibleModels = group.models.filter(m =>
+        normalizeText(m) !== normalizeText(model)
+      );
+      resultsContainer.innerHTML = `
+        <div class="result-header">
+          <h3>مشابه با <span class="highlight">${model}</span></h3>
+          <p class="result-count">${compatibleModels.length} مدل مشابه</p>
+        </div>
+        <div class="result-card">
+          <svg class="checkmark" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span class="compatible-models">${compatibleModels.join(', ')}</span>
+        </div>
+      `;
+    }
+
+    // Render a list of clickable suggestion chips
+    function showSuggestions(matches, isFuzzy) {
+      const label = isFuzzy
+        ? 'منظورتان این بود؟'
+        : `${matches.length} مدل پیدا شد — کدام را می‌خواهید؟`;
+      const chips = matches.map(({ model, group }) =>
+        `<button class="suggestion-btn" onclick="selectSuggestion(${JSON.stringify(model)}, ${group.id})">${model}</button>`
+      ).join('');
+      resultsContainer.innerHTML = `
+        <div class="suggestion-header">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
+          </svg>
+          <span>${label}</span>
+        </div>
+        <div class="suggestion-grid">${chips}</div>
+      `;
+    }
+
+    // Called when user clicks a suggestion chip
+    function selectSuggestion(modelName, groupId) {
+      const group = compatibilityGroups.find(g => g.id === groupId);
+      if (group) showCompatibleResult(modelName, group);
+    }
+
     function searchCompatibleModels(searchTerm) {
       const term = normalizeText(searchTerm);
 
@@ -809,50 +945,33 @@
         return;
       }
 
-      // Find the model and its group
-      let matchedModel = null;
-      let matchedGroup = null;
-
-      for (const group of compatibilityGroups) {
-        const found = group.models.find(model =>
-          normalizeText(model).includes(term)
-        );
-        if (found) {
-          matchedModel = found;
-          matchedGroup = group;
-          break;
-        }
+      // 1. Exact/contains matches
+      const exactMatches = findAllMatches(term);
+      if (exactMatches.length === 1) {
+        showCompatibleResult(exactMatches[0].model, exactMatches[0].group);
+        return;
       }
-
-      if (!matchedModel) {
-        resultsContainer.innerHTML = `
-          <div class="message-card error">
-            <svg class="message-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="m15 9-6 6"></path>
-              <path d="m9 9 6 6"></path>
-            </svg>
-            <p>مدلی یافت نشد</p>
-          </div>
-        `;
+      if (exactMatches.length > 1) {
+        showSuggestions(exactMatches, false);
         return;
       }
 
-      // Get compatible models from the same group
-      const compatibleModels = matchedGroup.models.filter(model =>
-        normalizeText(model) !== normalizeText(matchedModel)
-      );
+      // 2. Fuzzy fallback
+      const fuzzyMatches = findFuzzyMatches(term);
+      if (fuzzyMatches.length > 0) {
+        showSuggestions(fuzzyMatches, true);
+        return;
+      }
 
+      // 3. Nothing found
       resultsContainer.innerHTML = `
-        <div class="result-header">
-          <h3>مشابه با <span class="highlight">${matchedModel}</span></h3>
-          <p class="result-count">${compatibleModels.length} مدل مشابه</p>
-        </div>
-        <div class="result-card">
-          <svg class="checkmark" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-            <polyline points="20 6 9 17 4 12"></polyline>
+        <div class="message-card error">
+          <svg class="message-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <path d="m15 9-6 6"></path>
+            <path d="m9 9 6 6"></path>
           </svg>
-          <span class="compatible-models">${compatibleModels.join(', ')}</span>
+          <p>مدلی یافت نشد</p>
         </div>
       `;
     }
