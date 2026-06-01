@@ -674,6 +674,11 @@
     const resultsContainer = document.getElementById('results');
     const ghostText = document.getElementById('ghostText');
 
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice) {
+      ghostText.style.display = 'none';
+    }
+
     // Collect all models for autocomplete
     const allModels = [];
     for (const group of compatibilityGroups) {
@@ -713,6 +718,7 @@
     }
 
     function syncGhostStyles() {
+      if (isTouchDevice) return;
       const cs = window.getComputedStyle(searchInput);
       const props = ['fontSize', 'fontFamily', 'fontWeight', 'lineHeight',
         'letterSpacing', 'paddingTop', 'paddingRight', 'paddingBottom',
@@ -722,14 +728,17 @@
       props.forEach(p => { ghostText.style[p] = cs[p]; });
     }
 
-    syncGhostStyles();
-    window.addEventListener('resize', syncGhostStyles);
-    window.addEventListener('orientationchange', syncGhostStyles);
-    if (document.fonts && document.fonts.ready) {
-      document.fonts.ready.then(syncGhostStyles);
+    if (!isTouchDevice) {
+      syncGhostStyles();
+      window.addEventListener('resize', syncGhostStyles);
+      window.addEventListener('orientationchange', syncGhostStyles);
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(syncGhostStyles);
+      }
     }
 
     function updateGhostText() {
+      if (isTouchDevice) return;
       const value = searchInput.value;
       if (!value) {
         ghostText.textContent = '';
@@ -745,6 +754,7 @@
     }
 
     function acceptGhostText() {
+      if (isTouchDevice) return false;
       const value = searchInput.value;
       if (!value) return false;
 
