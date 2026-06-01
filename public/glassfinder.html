@@ -38,39 +38,7 @@
       color: var(--text-primary);
       overflow-x: hidden;
       position: relative;
-      transition: background 0.4s ease, color 0.4s ease;
     }
-
-    body.dark-mode {
-      background: linear-gradient(135deg, #0b1220 0%, #111b33 25%, #1a2747 50%, #111b33 75%, #0b1220 100%);
-      background-size: 400% 400%;
-    }
-
-    body.dark-mode::before {
-      background:
-        radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.10) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 70%, rgba(56, 189, 248, 0.07) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(30, 58, 138, 0.08) 0%, transparent 70%);
-    }
-
-    body.dark-mode .glass-card {
-      background: rgba(30, 41, 70, 0.35);
-      border-color: rgba(148, 180, 230, 0.12);
-      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(16px) brightness(0.92);
-      -webkit-backdrop-filter: blur(16px) brightness(0.92);
-    }
-
-    body.dark-mode .search-input {
-      background: rgba(255, 255, 255, 0.03);
-      border-color: rgba(148, 180, 230, 0.12);
-    }
-
-    body.dark-mode .search-button {
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
-      filter: brightness(0.92);
-    }
-
 
     body::before {
       content: '';
@@ -131,38 +99,7 @@
       position: relative;
       overflow: hidden;
       animation: fadeInUp 0.6s ease-out;
-      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
     }
-
-    .theme-toggle {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 50%;
-      color: var(--text-secondary);
-      cursor: pointer;
-      z-index: 2;
-      transition: background 0.4s ease, color 0.4s ease, border-color 0.4s ease, transform 0.2s ease;
-    }
-
-    .theme-toggle:hover {
-      background: rgba(255, 255, 255, 0.12);
-      color: var(--text-primary);
-      transform: scale(1.05);
-    }
-
-    .theme-toggle svg { width: 18px; height: 18px; }
-    .theme-toggle .icon-moon { display: none; }
-    body.dark-mode .theme-toggle .icon-sun { display: none; }
-    body.dark-mode .theme-toggle .icon-moon { display: block; }
-
 
     .glass-card::before {
       content: '';
@@ -560,12 +497,7 @@
 <body>
   <div class="container">
     <div class="glass-card">
-      <button id="themeToggle" class="theme-toggle" aria-label="Toggle dark mode" type="button">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </button>
       <h1 class="title">Glass Finder</h1>
-
       <p class="subtitle">با یه کلیک گلس مشابه رو پیدا کن</p>
 
       <div class="search-container">
@@ -940,22 +872,8 @@
       }
     });
 
-    // Theme toggle
-    const themeToggle = document.getElementById('themeToggle');
-    const applyTheme = (theme) => {
-      if (theme === 'dark') document.body.classList.add('dark-mode');
-      else document.body.classList.remove('dark-mode');
-    };
-    applyTheme(localStorage.getItem('gf-theme') || 'light');
-    themeToggle.addEventListener('click', () => {
-      const isDark = document.body.classList.toggle('dark-mode');
-      const theme = isDark ? 'dark' : 'light';
-      localStorage.setItem('gf-theme', theme);
-    });
-
     // Focus input on load
     searchInput.focus();
-
   </script>
 </body>
 </html>
