@@ -38,7 +38,39 @@
       color: var(--text-primary);
       overflow-x: hidden;
       position: relative;
+      transition: background 0.4s ease, color 0.4s ease;
     }
+
+    body.dark-mode {
+      background: linear-gradient(135deg, #0b1220 0%, #111b33 25%, #1a2747 50%, #111b33 75%, #0b1220 100%);
+      background-size: 400% 400%;
+    }
+
+    body.dark-mode::before {
+      background:
+        radial-gradient(ellipse at 20% 30%, rgba(59, 130, 246, 0.10) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 70%, rgba(56, 189, 248, 0.07) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(30, 58, 138, 0.08) 0%, transparent 70%);
+    }
+
+    body.dark-mode .glass-card {
+      background: rgba(30, 41, 70, 0.35);
+      border-color: rgba(148, 180, 230, 0.12);
+      box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(16px) brightness(0.92);
+      -webkit-backdrop-filter: blur(16px) brightness(0.92);
+    }
+
+    body.dark-mode .search-input {
+      background: rgba(255, 255, 255, 0.03);
+      border-color: rgba(148, 180, 230, 0.12);
+    }
+
+    body.dark-mode .search-button {
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.2);
+      filter: brightness(0.92);
+    }
+
 
     body::before {
       content: '';
