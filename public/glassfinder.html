@@ -674,6 +674,11 @@
     const resultsContainer = document.getElementById('results');
     const ghostText = document.getElementById('ghostText');
 
+    const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+    if (isTouchDevice) {
+      ghostText.style.display = 'none';
+    }
+
     // Collect all models for autocomplete
     const allModels = [];
     for (const group of compatibilityGroups) {
