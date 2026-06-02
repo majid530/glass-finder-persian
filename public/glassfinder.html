@@ -379,6 +379,7 @@
       position: fixed;
       top: 1.25rem;
       right: 1.25rem;
+      z-index: 10000;
       padding: 0.35rem 0.8rem;
       background: rgba(37, 99, 235, 0.18) !important;
       border: 1px solid rgba(59, 130, 246, 0.4) !important;
@@ -733,6 +734,32 @@
     const resultsContainer = document.getElementById('results');
     const ghostText = document.getElementById('ghostText');
 
+    // ── Modal setup (runs first so it works even if search logic below throws) ──
+    const guideModal = document.getElementById('guideModal');
+    const guideBox   = document.getElementById('guideBox');
+
+    function openModal() {
+      guideModal.style.display = 'flex';
+      requestAnimationFrame(() => guideModal.classList.add('open'));
+    }
+
+    function closeModal() {
+      guideModal.classList.add('closing');
+      setTimeout(() => {
+        guideModal.classList.remove('open', 'closing');
+        guideModal.style.display = 'none';
+      }, 200);
+    }
+
+    document.getElementById('guideBtn').addEventListener('click', openModal);
+    document.getElementById('modalCloseX').addEventListener('click', closeModal);
+    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+
+    guideModal.addEventListener('click', (e) => {
+      if (!guideBox.contains(e.target)) closeModal();
+    });
+    // ── End modal setup ──
+
     const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
     if (isTouchDevice) {
       ghostText.style.display = 'none';
@@ -950,30 +977,6 @@
     // Focus input on load
     searchInput.focus();
 
-    // Search guide modal
-    const guideModal = document.getElementById('guideModal');
-    const guideBox   = document.getElementById('guideBox');
-
-    function openModal() {
-      guideModal.style.display = 'flex';
-      requestAnimationFrame(() => guideModal.classList.add('open'));
-    }
-
-    function closeModal() {
-      guideModal.classList.add('closing');
-      setTimeout(() => {
-        guideModal.classList.remove('open', 'closing');
-        guideModal.style.display = 'none';
-      }, 200);
-    }
-
-    document.getElementById('guideBtn').addEventListener('click', openModal);
-    document.getElementById('modalCloseX').addEventListener('click', closeModal);
-    document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
-
-    guideModal.addEventListener('click', (e) => {
-      if (!guideBox.contains(e.target)) closeModal();
-    });
   </script>
 </body>
 </html>
