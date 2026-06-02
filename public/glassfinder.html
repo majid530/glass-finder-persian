@@ -687,22 +687,27 @@
       const persianDigits = {'۰':'0','۱':'1','۲':'2','۳':'3','۴':'4','۵':'5','۶':'6','۷':'7','۸':'8','۹':'9'};
       let result = text.replace(/[۰-۹]/g, d => persianDigits[d] || d);
 
+      // Insert spaces between letters and digits (e.g. note9 → note 9)
+      result = result
+        .replace(/([a-zA-Z])(\d)/g, '$1 $2')
+        .replace(/(\d)([a-zA-Z])/g, '$1 $2');
+
       // Apply brand aliases
       result = result
-        .replace(/\bip\b/gi, 'iphone ')
-        .replace(/ایفون/g, 'iphone ')
-        .replace(/اپل/g, 'iphone ')
-        .replace(/mi\s/gi, 'redmi ')
-        .replace(/شیائومی/g, 'redmi ')
-        .replace(/شیامی/g, 'redmi ')
-        .replace(/xiaomi/gi, 'redmi ')
+        .replace(/\bip\b/gi, 'iphone')
+        .replace(/ایفون/g, 'iphone')
+        .replace(/اپل/g, 'iphone')
+        .replace(/\bmi\b/gi, 'redmi')
+        .replace(/شیائومی/g, 'redmi')
+        .replace(/شیامی/g, 'redmi')
+        .replace(/xiaomi/gi, 'redmi')
         .replace(/سامسونگ/g, 'samsung')
         .replace(/\bpoko\b/gi, 'poco')
         .replace(/پوکو/g, 'poco')
-        .replace(/not\s/gi, 'note ')
-        .replace(/نوت/g, 'note ');
+        .replace(/\bnot\b/gi, 'note')
+        .replace(/نوت/g, 'note');
 
-      return result.toLowerCase().replace(/\s+/g, '');
+      return result.toLowerCase().replace(/[\s\-_.]+/g, '');
     }
 
     function searchCompatibleModels(searchTerm) {
@@ -728,7 +733,7 @@
 
       for (const group of compatibilityGroups) {
         const found = group.models.find(model =>
-          normalizeText(model) === term
+          normalizeText(model).includes(term)
         );
         if (found) {
           matchedModel = found;
