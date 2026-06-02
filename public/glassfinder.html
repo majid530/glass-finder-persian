@@ -375,21 +375,11 @@
       line-height: 1.5;
     }
 
-    .title-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .title-row .title {
-      margin-bottom: 0;
-    }
-
     .guide-btn {
+      position: fixed;
+      top: 1.25rem;
+      right: 1.25rem;
       padding: 0.35rem 0.8rem;
-      flex-shrink: 0;
       background: rgba(37, 99, 235, 0.18) !important;
       border: 1px solid rgba(59, 130, 246, 0.4) !important;
       border-radius: 10px;
@@ -635,12 +625,11 @@
   </style>
 </head>
 <body>
+  <button class="guide-btn" id="guideBtn">راهنمای جستجو</button>
+
   <div class="container">
     <div class="glass-card">
-      <div class="title-row">
-        <h1 class="title">Glass Finder</h1>
-        <button class="guide-btn" id="guideBtn">راهنمای جستجو</button>
-      </div>
+      <h1 class="title">Glass Finder</h1>
       <p class="subtitle">با یه کلیک گلس مشابه رو پیدا کن</p>
 
       <div class="search-container">
