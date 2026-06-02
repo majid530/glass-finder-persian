@@ -556,7 +556,7 @@
       { id: 25, models: ['A05', 'A06', 'A07', 'REDMI 13C', 'REDMI 13R', 'POCO C65', 'POCO M6'] },
       { id: 26, models: ['A05S', 'POCO C51', 'POCO C55', 'M14 4G'] },
       { id: 27, models: ['A10S', 'M10', 'M20', 'A10', 'M10S'] },
-      { id: 28, models: ['A11', 'REDMI NOTE 9', 'REDMI 11 LITE', 'REDMI 12 LITE', 'M11'] },
+      { id: 28, models: ['A11', 'NOTE 9', 'REDMI 11 LITE', 'REDMI 12 LITE', 'M11'] },
       { id: 29, models: ['A12', 'A13', 'A23', 'A32 5G', 'A70', 'A70S', 'A42', 'A02', 'A02S', 'A03', 'A03S', 'A03 CORE', 'A04', 'A04S', 'A04 CORE', 'M02 4G', 'M02S', 'M04 4G', 'M12', 'M13', 'M23 5G', 'M32 5G', 'M33 5G'] },
       { id: 30, models: ['A15', 'A25 5G', 'A24 4G', 'M34 5G'] },
       { id: 31, models: ['A22 5G', 'A14', 'A34 5G'] },
@@ -694,6 +694,7 @@
 
       // Apply brand aliases
       result = result
+        .replace(/redmi\s+note/gi, 'note')
         .replace(/\bip\b/gi, 'iphone')
         .replace(/ایفون/g, 'iphone')
         .replace(/اپل/g, 'iphone')
