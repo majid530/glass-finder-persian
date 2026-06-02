@@ -88,6 +88,7 @@
     }
 
     .glass-card {
+      position: relative;
       background: var(--glass-bg) !important;
       backdrop-filter: blur(20px) !important;
       -webkit-backdrop-filter: blur(20px) !important;
@@ -376,10 +377,9 @@
     }
 
     .guide-btn {
-      position: fixed;
-      top: 1.25rem;
-      right: 1.25rem;
-      z-index: 10000;
+      position: absolute;
+      top: 12px;
+      right: 12px;
       padding: 0.35rem 0.8rem;
       background: rgba(37, 99, 235, 0.18) !important;
       border: 1px solid rgba(59, 130, 246, 0.4) !important;
@@ -626,10 +626,9 @@
   </style>
 </head>
 <body>
-  <button class="guide-btn" id="guideBtn">راهنمای جستجو</button>
-
   <div class="container">
     <div class="glass-card">
+      <button class="guide-btn" id="guideBtn">راهنمای جستجو</button>
       <h1 class="title">Glass Finder</h1>
       <p class="subtitle">با یه کلیک گلس مشابه رو پیدا کن</p>
 
