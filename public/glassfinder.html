@@ -375,46 +375,6 @@
       line-height: 1.5;
     }
 
-    .suggestion-header {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      margin-bottom: 0.875rem;
-      color: var(--text-secondary) !important;
-      font-size: 0.88rem;
-      font-weight: 500;
-    }
-
-    .suggestion-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-    }
-
-    .suggestion-btn {
-      padding: 0.45rem 0.9rem;
-      background: rgba(255, 255, 255, 0.06) !important;
-      border: 1px solid rgba(255, 255, 255, 0.18) !important;
-      border-radius: 8px;
-      color: var(--text-primary) !important;
-      font-family: inherit;
-      font-size: 0.88rem;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .suggestion-btn:hover {
-      background: rgba(37, 99, 235, 0.22) !important;
-      border-color: rgba(59, 130, 246, 0.55) !important;
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
-    }
-
-    .suggestion-btn:active {
-      transform: translateY(0);
-    }
-
     @media (max-width: 768px) {
       .container {
         padding: 1rem;
@@ -768,27 +728,6 @@
       `;
     }
 
-    function showSuggestions(matches) {
-      const label = `${matches.length} مدل پیدا شد — کدام را می‌خواهید؟`;
-      const chips = matches.map(({ model, group }) =>
-        `<button class="suggestion-btn" onclick="selectSuggestion(${JSON.stringify(model)}, ${group.id})">${model}</button>`
-      ).join('');
-      resultsContainer.innerHTML = `
-        <div class="suggestion-header">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.35-4.35"></path>
-          </svg>
-          <span>${label}</span>
-        </div>
-        <div class="suggestion-grid">${chips}</div>
-      `;
-    }
-
-    function selectSuggestion(modelName, groupId) {
-      const group = compatibilityGroups.find(g => g.id === groupId);
-      if (group) showCompatibleResult(modelName, group);
-    }
-
     function searchCompatibleModels(searchTerm) {
       const term = normalizeText(searchTerm);
 
@@ -817,7 +756,7 @@
             const score = normModel === term ? 0        // exact
                         : normModel.startsWith(term) ? 1 // starts-with
                         : 2;                             // contains
-            matches.push({ model, group, score });
+            matches.push({ model, group, score, len: normModel.length });
             seen.add(model);
           }
         }
@@ -837,16 +776,9 @@
         return;
       }
 
-      // Sort by relevance then trim to 20
-      matches.sort((a, b) => a.score - b.score);
-      const top = matches.slice(0, 20);
-
-      if (top.length === 1) {
-        showCompatibleResult(top[0].model, top[0].group);
-        return;
-      }
-
-      showSuggestions(top);
+      // Best match: lowest score, then shortest name (avoids 12C over 12)
+      matches.sort((a, b) => a.score !== b.score ? a.score - b.score : a.len - b.len);
+      showCompatibleResult(matches[0].model, matches[0].group);
     }
 
     searchBtn.addEventListener('click', () => {
